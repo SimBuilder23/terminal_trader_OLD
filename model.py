@@ -1,75 +1,51 @@
-
 #!/usr/bin/env python3
 
 import csv
+
+import numpy as np
 import pandas as pd
 
-from orm import Database
 
-def does_not_exist(username):
-    with Database() as db:
-        db.cursor.execute(
-            "SELECT username FROM users WHERE username=%s;", (username,))
-        occurences = db.cursor.fetchall()
-        if len(occurences) < 1:
-            print("occurences", occurences, type(occurences))
-            return True
-        else:
-            print("username taken")
-            return False
+df = pd.read_csv('UBER.csv')
 
-class User:
+"""print(df.shape)
+print(df.describe())
+print (df)"""
 
-    def __init__(self, username):
-        self.username = username
+df1 = pd.DataFrame({'date':[1., 2., 3., 4.],
+                    'open':[1., 2., 3., 4.],
+                    'high':[1., 2., 3., 4.],
+                    'low':[1., 2., 3., 4.],
+                    'close':[1., 2., 3., 4.],
+                    'adj_close':[1., 2., 3., 4.],
+                    'volume':[1., 2., 3., 4.]})
+#print (df1.describe())
 
-    def __enter__(self):
-        return self
+d = {'date':[],
+    'open':[],
+    'high':[],
+    'low':[],
+    'close':[],
+    'adj_close':[],
+    'volume':[]}
 
-    def __exit__(self, type_, value, traceback):
-        pass
-
-
-    def login(self, password):
-        with Database() as db:
-            db.cursor.execute(
-                """SELECT password
-                    FROM users
-                    WHERE username=%s;""",
-                    (self.username,))
-            if password == db.cursor.fetchone():
-                return True
-            else:
-                return False
+with open ("UBER.csv", "r") as f:
+    rows = csv.reader(f)
+    next(rows)
+    for row in rows:
+        d['date'].append(row[0])
+        d['open'].append(row[1])
+        d['high'].append(row[2])
+        d['low'].append(row[3])
+        d['close'].append(row[4])
+        d['adj_close'].append(row[5])
+        d['volume'].append(row[6])
 
 
-    def signup(self, password):
-        if does_not_exist(self.username):
-            with Database() as db:
-                db.cursor.execute(
-                """INSERT INTO users(
-                        username,
-                        password
-                    ) VALUES (
-                        %s, %s
-                    );""", (self.username, password)
-                )
-                return True
-        else:
-            return False
 
-    def buy(self, ticker_symbol, trade_volume):
-        # FIXME
-        pass
+df2 = pd.DataFrame(d, index=list('xyza'))
 
-    def sell(self):
-        # TODO
-        pass
-
-if __name__ == "__main__":
-    user = User("kyle")
-    print(user.signup("rippere"))
-
-
+if __name__ == '__main__':
+    print (df2)
 
 
