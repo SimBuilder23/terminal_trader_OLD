@@ -1,0 +1,50 @@
+
+if __name__ == "__main__":
+    with User('simbuilder') as u:
+        u.buy(IBM, 10)
+
+
+#   """ with Database() as db:
+        tab1 = {"name" : "users",
+                "columns" : [
+                    {"name":"username",  "type":"VARCHAR"},
+                    {"name":"password",  "type":"VARCHAR"},
+                    {"name":"balance",   "type":"FLOAT"}]}
+
+        tab2 = {"name" : "transactions",
+                "columns" : [
+                    {"name":"user_id",           "type":"INTEGER"},
+                    {"name":"buy",               "type":"INTEGER"},
+                    {"name":"execution_price",   "type":"FLOAT"},
+                    {"name":"ticker_symbol",     "type":"VARCHAR"},
+                    {"name":"order_quantity",    "type":"INTEGER"},
+                    {"name":"time_stamp",        "type":"FLOAT"}]}
+
+        ## TODO Add a functio to the database class,
+        ## to handle for the following statement:
+        ## which should be added to the 'tab2' 'tab3':
+        ## FOREIGN KEY(user_id) REFERENCES users(pk)
+
+        tab3 = {"name" : "positions",
+                "columns" : [
+                    {"name":"user_id",           "type":"INTEGER"},
+                    {"name":"average_price",     "type":"FLOAT"},
+                    {"name":"ticker_symbol",     "type":"VARCHAR"},
+                    {"name":"current_holdings",  "type":"INTEGER"}]}
+
+
+        for table in [tab1, tab2, tab3]:
+            db.create_table(table["name"])
+            for column_name in table["columns"]:
+                db.add_column(
+                    table["name"],
+                    column_name["name"],
+                    column_name["type"])
+
+##    user = User("kyle")
+##    print(user.signup("rippere"))
+
+    with User('simbuilder') as u:
+        u.signup('opensesame', 1000000.00)"""
+
+

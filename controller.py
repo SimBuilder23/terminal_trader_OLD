@@ -43,8 +43,8 @@ def game_loop():
                     if u.login(password):
                     # excute the buy order,
                     # if there's enough money in acct
-                    confirmation_message = u.buy(ticker_symbol, trade_volume)
-                    print (confirmation_message)
+                        confirmation_message = u.buy(ticker_symbol, trade_volume)
+                        print (confirmation_message)
                     pass
 
 

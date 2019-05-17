@@ -1,11 +1,11 @@
 
 #!/usr/bin/env python3
 
-import psycopg2
-
 import csv
 
+import psycopg2
 import pandas as pd
+
 
 print ("in object_relational_mapper.py")
 
@@ -89,55 +89,36 @@ class User:
             return False
 
     def buy(self, ticker_symbol, trade_volume):
-        # FIXME
-        pass
+        # TODO connect to the model, un-hardcode the username, un-hardcode the price, un-hardcode the trade_volume
 
-    def sell(self):
+
+        with Database() as db:
+            db.cursor.execute(
+                """SELECT balance from users where username='simbuilder';""")
+            my_cash = db.cursor.fetchone()
+            last_price = 435342.00
+
+            print (my_cash)
+            print(type(my_cash))
+            print(type(trade_volume))
+            print(type(last_price))
+
+
+            if (float(my_cash[0]) >= trade_volume * last_price):
+                print ("Filled! You bought {} {} @ {}.".format(trade_volume, ticker_symbol, last_price))
+                pass
+            else:
+                print ("Rejected! You don't have enough funds available.")
+
+    def sell(self, ticker_symbol, trade_volume):
+        pass
+#        with Database() as db:
+ #           my_position - db.cursor.execute(
+  #              """ SELECT position from"""
         # TODO
         pass
 
 if __name__ == "__main__":
-    with Database() as db:
-        tab1 = {"name" : "users",
-                "columns" : [
-                    {"name":"username",  "type":"VARCHAR"},
-                    {"name":"password",  "type":"VARCHAR"},
-                    {"name":"balance",   "type":"FLOAT"}]}
-
-        tab2 = {"name" : "transactions",
-                "columns" : [
-                    {"name":"user_id",           "type":"INTEGER"},
-                    {"name":"buy",               "type":"INTEGER"},
-                    {"name":"execution_price",   "type":"FLOAT"},
-                    {"name":"ticker_symbol",     "type":"VARCHAR"},
-                    {"name":"order_quantity",    "type":"INTEGER"},
-                    {"name":"time_stamp",        "type":"FLOAT"}]}
-
-        ## TODO Add a functio to the database class, 
-        ## to handle for the following statement:
-        ## which should be added to the 'tab2' 'tab3':
-        ## FOREIGN KEY(user_id) REFERENCES users(pk)
-
-        tab3 = {"name" : "positions",
-                "columns" : [
-                    {"name":"user_id",           "type":"INTEGER"},
-                    {"name":"average_price",     "type":"FLOAT"},
-                    {"name":"ticker_symbol",     "type":"VARCHAR"},
-                    {"name":"current_holdings",  "type":"INTEGER"}]}
-
-
-        for table in [tab1, tab2, tab3]:
-            db.create_table(table["name"])
-            for column_name in table["columns"]:
-                db.add_column(
-                    table["name"],
-                    column_name["name"],
-                    column_name["type"])
-
-##    user = User("kyle")
-##    print(user.signup("rippere"))
-
     with User('simbuilder') as u:
-        u.signup('opensesame', 1000000.00)
-
+        u.buy("IBM", 100)
 
